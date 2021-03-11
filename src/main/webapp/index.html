@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script>
+        let socket = new WebSocket("ws://localhost:8080/P3WebSocket-1.0-SNAPSHOT/echo");
+
+        function send() {
+            let data = document.getElementById("msg").value;
+            socket.send(data)
+        }
+
+        socket.onmessage = function (ev) {
+            document.getElementById("out").innerHTML = ev.data;
+        }
+
+        function close() {
+            socket.close();
+        }
+    </script>
+    <title>WebSocket</title>
+</head>
+<body>
+<label for="msg">Message:</label><br>
+<textarea name="msg" id="msg" cols="30" rows="10"></textarea>
+<br>
+<button onclick="send()">Send</button>
+<button onclick="close()">Close</button>
+<br>
+Output: <br>
+<div id="out" style="background-color: black; color: greenyellow; width: 250px; height: 100px"></div>
+</body>
+</html>
