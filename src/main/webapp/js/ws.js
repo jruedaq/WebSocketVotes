@@ -4,10 +4,6 @@ function wsSend(voteCandidateId) {
     socket.send(voteCandidateId)
 }
 
-function wsClose() {
-    socket.close();
-}
-
 socket.onmessage = function (ev) {
     let split = ev.data.split(",");
 
