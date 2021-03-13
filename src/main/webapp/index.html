@@ -2,32 +2,33 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <script>
-        let socket = new WebSocket("ws://localhost:8080/P3WebSocket-1.0-SNAPSHOT/echo");
-
-        function send() {
-            let data = document.getElementById("msg").value;
-            socket.send(data)
-        }
-
-        socket.onmessage = function (ev) {
-            document.getElementById("out").innerHTML = ev.data;
-        }
-
-        function close() {
-            socket.close();
-        }
-    </script>
-    <title>WebSocket</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Votes</title>
 </head>
 <body>
-<label for="msg">Message:</label><br>
-<textarea name="msg" id="msg" cols="30" rows="10"></textarea>
-<br>
-<button onclick="send()">Send</button>
-<button onclick="close()">Close</button>
-<br>
-Output: <br>
-<div id="out" style="background-color: black; color: greenyellow; width: 250px; height: 100px"></div>
+
+<div>
+    <h1>Sistema de votaciones ETITC</h1>
+
+    <h3>Elija su candidato</h3>
+
+    <label for="candidates">Candidato</label>
+    <select name="candidates" id="candidates">
+        <option value="disabled" selected disabled>Seleccione una opción</option>
+        <option value="0">Ana</option>
+        <option value="1">Alejandro</option>
+        <option value="2">Antonia</option>
+        <option value="3">Alexandra</option>
+    </select>
+    <input type="button" value="Enviar" onclick="vote();">
+</div>
+
+
+<canvas id="myCanvas" width="800" height="400" style="border: 1px solid black;"></canvas>
+
+<script src="js/Candidate.js"></script>
+<script src="js/index.js"></script>
+<script src="js/ws.js"></script>
 </body>
 </html>

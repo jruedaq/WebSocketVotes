@@ -5,6 +5,7 @@ import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @ApplicationScoped
@@ -12,24 +13,29 @@ import java.util.Set;
 public class Echo {
     private static Set<Session> connectedClients = new HashSet<>();
 
+    private int anaVotes;
+    private int alejandroVotes;
+    private int antoniaVotes;
+    private int alexandraVotes;
+
     @OnClose
-    public void close(Session session) { // Cuando se cierra la conexión de un cliente
+    public void close(Session session) {
         System.out.println("Disconnecting client...");
         connectedClients.remove(session);
     }
 
     @OnError
-    public void onError(Throwable throwable) { // En caso de error
+    public void onError(Throwable throwable) {
         System.out.println(throwable.getMessage());
         throwable.printStackTrace();
     }
 
     @OnOpen
-    public void open(Session session) { // Cuando se abre la conexión de un cliente
+    public void open(Session session) {
         System.out.println("Connecting client...");
         connectedClients.add(session);
         try {
-            session.getBasicRemote().sendText("Connected!"); // Conexión correcta
+            session.getBasicRemote().sendText(this.anaVotes + "," + this.alejandroVotes + "," + this.antoniaVotes + "," + this.alexandraVotes);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -39,10 +45,24 @@ public class Echo {
     public void sendMessage(String message, Session session) { // En el momento que se envía el mensaje
         System.out.println("Entry message > " + message);
 
-        try { // Si no hay error entonces
-            for (Session i : connectedClients) { // Por cada sesión almacenada en el array de la linea 13 lo llamare uno por uno como i
-                if (!i.getId().equals(session.getId())) { // Si no soy yo entonces
-                    i.getBasicRemote().sendText("Entry message > " + message); // mostrar mensaje
+        switch (Integer.parseInt(message)) {
+            case 0:
+                this.anaVotes++;
+                break;
+            case 1:
+                this.alejandroVotes++;
+                break;
+            case 2:
+                this.antoniaVotes++;
+                break;
+            case 3:
+                this.alexandraVotes++;
+                break;
+        }
+        try {
+            for (Session i : connectedClients) {
+                if (!i.getId().equals(session.getId())) {
+                    i.getBasicRemote().sendText(this.anaVotes + "," + this.alejandroVotes + "," + this.antoniaVotes + "," + this.alexandraVotes);
                 }
             }
         } catch (IOException e) { // En caso de error
